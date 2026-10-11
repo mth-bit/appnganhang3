@@ -7,7 +7,7 @@ import random
 # CẤU HÌNH ỨNG DỤNG
 # =========================
 st.set_page_config(
-    page_title="DemoBank - Ngân hàng số",
+    page_title="VietBank - Ngân hàng số",
     page_icon="🏦",
     layout="wide"
 )
@@ -62,7 +62,7 @@ if "loans" not in st.session_state:
 # =========================
 st.markdown("""
 <div class="main-title">
-    <h1>🏦 DemoBANK</h1>
+    <h1>🏦 VietBANK</h1>
     <h3>Ngân hàng số - Giao dịch dễ dàng</h3>
     <p>An toàn • Nhanh chóng • Tiện lợi</p>
 </div>
@@ -83,7 +83,7 @@ menu = st.sidebar.radio(
 
 st.sidebar.divider()
 st.sidebar.info(
-    "DemoBank\n\n"
+    "VietBank\n\n"
     "Ứng dụng mô phỏng phục vụ học tập.\n"
     "Không thực hiện giao dịch tài chính thật."
 )
@@ -109,7 +109,7 @@ def save_request(service, customer, details):
 # =========================
 if menu == "🏠 Trang chủ":
 
-    st.subheader("Xin chào! Chào mừng đến với DemoBank 👋")
+    st.subheader("Xin chào! Chào mừng đến với VietBank 👋")
     st.write(
         "Khám phá các dịch vụ ngân hàng trực tuyến "
         "và gửi yêu cầu đăng ký ngay trên ứng dụng."
@@ -472,5 +472,5 @@ elif menu == "📋 Quản lý đăng ký":
 # =========================
 st.divider()
 st.caption(
-    "© 2026 DemoBank | Ứng dụng mô phỏng ngân hàng số phục vụ học tập."
+    "© 2026 VietBank | Ứng dụng mô phỏng ngân hàng số phục vụ học tập."
 )
