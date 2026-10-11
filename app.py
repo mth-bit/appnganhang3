@@ -474,3 +474,202 @@ st.divider()
 st.caption(
     "© 2026 VietBank | Ứng dụng mô phỏng ngân hàng số phục vụ học tập."
 )
+
+# =========================
+# CHATBOX HỖ TRỢ KHÁCH HÀNG
+# Không sử dụng AI
+# =========================
+
+# Khởi tạo lịch sử trò chuyện
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = [
+        {
+            "role": "assistant",
+            "content": (
+                "Xin chào! Chào mừng bạn đến với VietBank. 👋\n\n"
+                "Tôi là trợ lý hỗ trợ tự động. "
+                "Bạn cần tìm hiểu dịch vụ nào ạ?"
+            )
+        }
+    ]
+
+if "chat_open" not in st.session_state:
+    st.session_state.chat_open = False
+
+# Các câu trả lời được lập trình sẵn
+def get_bot_reply(message):
+    msg = message.lower().strip()
+
+    if any(word in msg for word in ["xin chào", "chào", "hello", "hi"]):
+        return (
+            "Xin chào bạn! 😊 VietBank có các dịch vụ "
+            "mở thẻ, mở tài khoản, gửi tiết kiệm và vay vốn. "
+            "Bạn muốn tìm hiểu dịch vụ nào?"
+        )
+
+    elif any(word in msg for word in ["mở thẻ", "làm thẻ", "thẻ ngân hàng"]):
+        return (
+            "💳 Để đăng ký mở thẻ, bạn chọn mục "
+            "'Mở thẻ ngân hàng' ở thanh menu bên trái. "
+            "Vui lòng nhập họ tên, số điện thoại, loại thẻ "
+            "và phương thức nhận thẻ rồi gửi yêu cầu nhé."
+        )
+
+    elif any(word in msg for word in [
+        "mở tài khoản", "tạo tài khoản", "đăng ký tài khoản"
+    ]):
+        return (
+            "👤 Bạn chọn mục 'Mở tài khoản' ở thanh menu bên trái, "
+            "điền thông tin theo biểu mẫu và xác nhận đăng ký. "
+            "Hệ thống sẽ cung cấp mã yêu cầu sau khi ghi nhận."
+        )
+
+    elif any(word in msg for word in [
+        "tiết kiệm", "gửi tiền", "lãi suất", "tiền lãi"
+    ]):
+        return (
+            "💰 Bạn vào mục 'Gửi tiết kiệm', nhập số tiền gửi, "
+            "kỳ hạn và lãi suất giả định để xem tiền lãi dự kiến. "
+            "Đây chỉ là phép tính minh họa, không phải lãi suất "
+            "thực tế của ngân hàng."
+        )
+
+    elif any(word in msg for word in [
+        "vay vốn", "vay tiền", "khoản vay", "vay ngân hàng"
+    ]):
+        return (
+            "🏦 Bạn chọn mục 'Vay vốn ngân hàng', điền mục đích vay, "
+            "số tiền, thời hạn và nguồn thu nhập. "
+            "Yêu cầu chỉ dùng để đăng ký tư vấn, "
+            "không có nghĩa khoản vay được duyệt."
+        )
+
+    elif any(word in msg for word in [
+        "mã yêu cầu", "kiểm tra đăng ký", "trạng thái", "đăng ký rồi"
+    ]):
+        return (
+            "📋 Bạn vào mục 'Quản lý đăng ký' để xem danh sách "
+            "yêu cầu đã ghi nhận trong phiên sử dụng hiện tại. "
+            "Trạng thái ban đầu là 'Chờ xử lý'."
+        )
+
+    elif any(word in msg for word in [
+        "cảm ơn", "thank", "thanks"
+    ]):
+        return (
+            "Rất vui được hỗ trợ bạn! 💙 "
+            "Nếu cần tìm hiểu dịch vụ khác, bạn cứ nhắn tại đây nhé."
+        )
+
+    elif any(word in msg for word in [
+        "nhân viên", "gặp người", "liên hệ", "hotline", "tư vấn viên"
+    ]):
+        return (
+            "Hiện tại đây là chatbot mô phỏng phục vụ học tập, "
+            "chưa có chức năng kết nối nhân viên thật. "
+            "Bạn có thể chọn dịch vụ trên menu để tìm hiểu thêm nhé."
+        )
+
+    else:
+        return (
+            "Xin lỗi, tôi chưa tìm thấy câu trả lời phù hợp. 🤔\n\n"
+            "Bạn có thể hỏi về: mở thẻ, mở tài khoản, "
+            "gửi tiết kiệm, vay vốn hoặc quản lý đăng ký."
+        )
+
+
+# Nút mở / đóng chatbox
+st.markdown("---")
+
+chat_col1, chat_col2 = st.columns([5, 1])
+
+with chat_col1:
+    st.caption("💬 HỖ TRỢ KHÁCH HÀNG VIETBANK")
+
+with chat_col2:
+    if st.button(
+        "Đóng chat" if st.session_state.chat_open else "💬 Chat",
+        key="toggle_chat"
+    ):
+        st.session_state.chat_open = not st.session_state.chat_open
+        st.rerun()
+
+
+# Giao diện trò chuyện
+if st.session_state.chat_open:
+    with st.container(border=True):
+        st.subheader("💬 VietBank hỗ trợ")
+
+        # Hiển thị tin nhắn
+        for chat in st.session_state.chat_history:
+            with st.chat_message(chat["role"]):
+                st.markdown(chat["content"])
+
+        # Các câu hỏi nhanh
+        st.caption("Câu hỏi thường gặp:")
+
+        quick_questions = [
+            "Cách mở thẻ ngân hàng",
+            "Cách mở tài khoản",
+            "Cách gửi tiết kiệm",
+            "Cách đăng ký vay vốn"
+        ]
+
+        qcols = st.columns(2)
+
+        for i, question in enumerate(quick_questions):
+            with qcols[i % 2]:
+                if st.button(
+                    question,
+                    key=f"quick_question_{i}",
+                    use_container_width=True
+                ):
+                    st.session_state.chat_history.append({
+                        "role": "user",
+                        "content": question
+                    })
+                    st.session_state.chat_history.append({
+                        "role": "assistant",
+                        "content": get_bot_reply(question)
+                    })
+                    st.rerun()
+
+        # Ô nhập tin nhắn
+        with st.form("chat_form", clear_on_submit=True):
+            user_message = st.text_input(
+                "Tin nhắn",
+                placeholder="Nhập câu hỏi của bạn..."
+            )
+
+            send = st.form_submit_button(
+                "Gửi tin nhắn",
+                use_container_width=True
+            )
+
+            if send:
+                if user_message.strip():
+                    st.session_state.chat_history.append({
+                        "role": "user",
+                        "content": user_message.strip()
+                    })
+
+                    reply = get_bot_reply(user_message)
+
+                    st.session_state.chat_history.append({
+                        "role": "assistant",
+                        "content": reply
+                    })
+
+                    st.rerun()
+
+        if st.button("🗑️ Xóa cuộc trò chuyện", key="clear_chat"):
+            st.session_state.chat_history = [
+                {
+                    "role": "assistant",
+                    "content": (
+                        "Xin chào! Chào mừng bạn đến với VietBank. 👋\n\n"
+                        "Bạn cần hỗ trợ dịch vụ nào ạ?"
+                    )
+                }
+            ]
+            st.rerun()
